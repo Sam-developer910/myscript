@@ -1,0 +1,114 @@
+-- [[ SAM HUB V2.1 - OFFICIAL UPDATE ]] --
+-- Optimized for Android (Delta, Fluxus, Vega X)
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+local GuiService = game:GetService("GuiService")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
+-- 1. KONFIGURASI GLOBAL
+_G.SamHubEnabled = true
+_G.ESPEnabled = true
+_G.TeamCheck = true
+_G.WallCheck = true
+_G.HealthBar = true
+_G.FOV = 130
+_G.Smoothness = 0.15
+_G.MainColor = Color3.fromRGB(0, 255, 255)
+
+-- Hapus GUI lama jika ada
+if CoreGui:FindFirstChild("SamHubGUI") then
+    CoreGui:FindFirstChild("SamHubGUI"):Destroy()
+end
+
+-- 2. PEMBUATAN GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "SamHubGUI"
+ScreenGui.Parent = CoreGui
+
+-- Tombol Floating (Show/Hide Menu)
+local ToggleBtn = Instance.new("TextButton")
+ToggleBtn.Name = "ToggleBtn"
+ToggleBtn.Parent = ScreenGui
+ToggleBtn.BackgroundColor3 = _G.MainColor
+ToggleBtn.Position = UDim2.new(0.02, 0, 0.4, 0)
+ToggleBtn.Size = UDim2.new(0, 45, 0, 45)
+ToggleBtn.Text = "SAM"
+ToggleBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+ToggleBtn.Font = Enum.Font.SourceSansBold
+ToggleBtn.TextSize = 14
+local BtnCorner = Instance.new("UICorner")
+BtnCorner.CornerRadius = UDim.new(1, 0)
+BtnCorner.Parent = ToggleBtn
+
+-- Frame Utama
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+MainFrame.Position = UDim2.new(0.3, 0, 0.3, 0)
+MainFrame.Size = UDim2.new(0, 200, 0, 260)
+MainFrame.Active = true
+MainFrame.Draggable = true -- Support drag di HP
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.Parent = MainFrame
+
+-- Fungsi Toggle Show/Hide
+ToggleBtn.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+end)
+
+-- Judul
+local Title = Instance.new("TextLabel")
+Title.Parent = MainFrame
+Title.BackgroundColor3 = _G.MainColor
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Text = "SAM HUB V2.1"
+Title.TextColor3 = Color3.fromRGB(0, 0, 0)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 20
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.Parent = Title
+
+-- Fungsi Pembuat Tombol Menu
+local function CreateMenuBtn(text, pos, stateVar)
+    local btn = Instance.new("TextButton")
+    btn.Parent = MainFrame
+    btn.Position = pos
+    btn.Size = UDim2.new(0.9, 0, 0, 35)
+    btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    btn.Text = text .. ": ON"
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = Enum.Font.SourceSans
+    btn.TextSize = 16
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+    
+    return btn
+end
+
+local btnAim = CreateMenuBtn("Aimbot", UDim2.new(0.05, 0, 0.2, 0))
+local btnESP = CreateMenuBtn("ESP", UDim2.new(0.05, 0, 0.4, 0))
+local btnTeam = CreateMenuBtn("Team Check", UDim2.new(0.05, 0, 0.6, 0))
+local btnHealth = CreateMenuBtn("Health Bar", UDim2.new(0.05, 0, 0.8, 0))
+
+-- Logika Interaksi Tombol
+btnAim.MouseButton1Click:Connect(function()
+    _G.SamHubEnabled = not _G.SamHubEnabled
+    btnAim.Text = "Aimbot: " .. (_G.SamHubEnabled and "ON" or "OFF")
+end)
+btnESP.MouseButton1Click:Connect(function()
+    _G.ESPEnabled = not _G.ESPEnabled
+    btnESP.Text = "ESP: " .. (_G.ESPEnabled and "ON" or "OFF")
+end)
+btnTeam.MouseButton1Click:Connect(function()
+    _G.TeamCheck = not _G.TeamCheck
+    btnTeam.Text = "Team Check: " .. (_G.TeamCheck and "ON" or "OFF")
+end)
+btnHealth.MouseButton1Click:Connect(function()
+    _G.HealthBar = not _G.HealthBar
+    btnHealth.Text = "Health Bar
+    
